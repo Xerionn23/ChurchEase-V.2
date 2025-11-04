@@ -18,12 +18,12 @@ import traceback
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
 CORS(app)
 
-# Supabase configuration
-SUPABASE_URL = "https://dgeauftgwgxkbwidiios.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRnZWF1ZnRnd2d4a2J3aWRpaW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNzg0NDUsImV4cCI6MjA3Mjg1NDQ0NX0.RfXmA9vHiUkIR2blt6r2RP_2reKfdy8IQUL7b5uX13M"
+# Supabase configuration - Use environment variables for production
+SUPABASE_URL = os.getenv('SUPABASE_URL', "https://dgeauftgwgxkbwidiios.supabase.co")
+SUPABASE_KEY = os.getenv('SUPABASE_KEY', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRnZWF1ZnRnd2d4a2J3aWRpaW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNzg0NDUsImV4cCI6MjA3Mjg1NDQ0NX0.RfXmA9vHiUkIR2blt6r2RP_2reKfdy8IQUL7b5uX13M")
 
 # Initialize Supabase client with options to avoid proxy issues
 try:
@@ -34,12 +34,12 @@ except Exception as e:
     # Fallback initialization
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# Email configuration for Gmail SMTP
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
+# Email configuration for Gmail SMTP - Use environment variables for production
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'rotchercadorna16@gmail.com'
-app.config['MAIL_PASSWORD'] = 'nkwbyvexcovwybdy'  # Gmail App Password (no spaces)
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'rotchercadorna16@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'nkwbyvexcovwybdy')
 app.config['MAIL_DEFAULT_SENDER'] = ('ChurchEase', app.config['MAIL_USERNAME'])
 mail = Mail(app)
 
