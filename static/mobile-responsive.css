@@ -1,0 +1,1082 @@
+/* ============================================================================ */
+/* CHURCHEASE V.2 - COMPLETE MOBILE RESPONSIVE DESIGN */
+/* All Components: Tables, Modals, Forms, Navigation, Charts, etc. */
+/* ============================================================================ */
+
+/* ============================================================================ */
+/* 1. RESERVATION TABLE - MOBILE CARD LAYOUT */
+/* ============================================================================ */
+
+/* Hide table on mobile, show card layout */
+@media (max-width: 768px) {
+    /* Hide table headers on mobile */
+    .reservations-table thead {
+        display: none;
+    }
+    
+    /* Convert table to card layout */
+    .reservations-table tbody {
+        display: block;
+    }
+    
+    .reservations-table tr {
+        display: block;
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+    
+    .reservations-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f3f4f6;
+        text-align: right;
+    }
+    
+    .reservations-table td:last-child {
+        border-bottom: none;
+    }
+    
+    /* Add labels before each cell */
+    .reservations-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #374151;
+        text-align: left;
+        flex: 1;
+    }
+    
+    /* Action buttons full width on mobile */
+    .reservations-table td .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        margin-top: 12px;
+    }
+    
+    .reservations-table td .action-buttons .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Status badges larger on mobile */
+    .status-badge {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }
+    
+    .stipendium-badge {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+    .reservations-table tr {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .reservations-table td {
+        padding: 8px 0;
+        font-size: 13px;
+    }
+    
+    .reservations-table td::before {
+        font-size: 12px;
+    }
+}
+
+/* ============================================================================ */
+/* 2. EVENTS TABLE - MOBILE CARD LAYOUT */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    .events-table thead {
+        display: none;
+    }
+    
+    .events-table tbody {
+        display: block;
+    }
+    
+    .events-table tr {
+        display: block;
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #0891b2;
+    }
+    
+    .events-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    
+    .events-table td:last-child {
+        border-bottom: none;
+    }
+    
+    .events-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #374151;
+        flex: 1;
+    }
+}
+
+/* ============================================================================ */
+/* 3. SIDEBAR NAVIGATION - MOBILE OPTIMIZATION */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Sidebar full height overlay */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1002;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    /* Sidebar overlay backdrop */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        backdrop-filter: blur(2px);
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    /* Logo section mobile */
+    .sidebar-header {
+        padding: 16px;
+    }
+    
+    .sidebar-header img {
+        max-width: 50px;
+        max-height: 50px;
+    }
+    
+    .logo-text {
+        font-size: 18px !important;
+    }
+    
+    /* Navigation items spacing */
+    .nav-link {
+        padding: 12px 16px !important;
+        font-size: 14px !important;
+    }
+    
+    .nav-link i {
+        font-size: 18px !important;
+        min-width: 24px;
+    }
+    
+    .nav-text {
+        font-size: 14px !important;
+    }
+    
+    /* User profile in sidebar */
+    .user-profile-nav {
+        padding: 12px 16px;
+    }
+    
+    .user-profile-nav .user-avatar {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .user-profile-nav .user-info {
+        display: block !important;
+    }
+    
+    .user-profile-nav .user-name {
+        font-size: 13px;
+    }
+    
+    .user-profile-nav .user-role {
+        font-size: 11px;
+    }
+    
+    /* Close button for sidebar */
+    .sidebar-close {
+        display: block;
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s;
+    }
+    
+    .sidebar-close:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* ============================================================================ */
+/* 4. DASHBOARD STAT CARDS - MOBILE SIZING */
+/* ============================================================================ */
+
+@media (max-width: 1200px) {
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-cards {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+    }
+    
+    .stat-card,
+    .enhanced-card {
+        padding: 20px !important;
+    }
+    
+    .stat-icon {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 24px !important;
+    }
+    
+    .stat-value {
+        font-size: 32px !important;
+    }
+    
+    .stat-label {
+        font-size: 13px !important;
+    }
+    
+    .stat-sublabel {
+        font-size: 11px !important;
+    }
+    
+    .stat-progress {
+        margin-top: 10px !important;
+    }
+    
+    /* Quick actions mobile */
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
+    
+    .quick-action-card {
+        padding: 16px !important;
+    }
+    
+    .quick-action-icon {
+        width: 48px !important;
+        height: 48px !important;
+    }
+    
+    .quick-action-icon i {
+        font-size: 20px !important;
+    }
+    
+    .quick-action-title {
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .stat-value {
+        font-size: 28px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 5. RESERVATION FORM MODAL - MOBILE LAYOUT */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    .reservation-form-modal .modal-content,
+    .payment-modal .modal-content {
+        width: 95% !important;
+        max-width: 95vw !important;
+        margin: 10px !important;
+        max-height: 90vh !important;
+    }
+    
+    .modal-header {
+        padding: 16px !important;
+    }
+    
+    .modal-title {
+        font-size: 18px !important;
+    }
+    
+    .modal-body {
+        padding: 16px !important;
+        max-height: calc(90vh - 140px) !important;
+        overflow-y: auto !important;
+    }
+    
+    .modal-footer {
+        padding: 12px 16px !important;
+        flex-direction: column-reverse !important;
+    }
+    
+    .modal-footer .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Form rows to single column */
+    .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .form-group {
+        margin-bottom: 12px !important;
+    }
+    
+    .form-group label {
+        font-size: 13px !important;
+    }
+    
+    .form-control,
+    .form-select {
+        font-size: 14px !important;
+        padding: 10px 12px !important;
+    }
+    
+    /* Service selection cards */
+    .service-cards {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .service-card {
+        padding: 16px !important;
+    }
+    
+    .service-icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 24px !important;
+    }
+    
+    .service-name {
+        font-size: 15px !important;
+    }
+    
+    .service-price {
+        font-size: 13px !important;
+    }
+    
+    /* Payment calculator section */
+    .payment-summary-card {
+        padding: 16px !important;
+        margin: 12px 0 !important;
+    }
+    
+    .payment-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+    
+    .payment-label {
+        font-size: 13px !important;
+    }
+    
+    .payment-value {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-title {
+        font-size: 16px !important;
+    }
+    
+    .service-cards {
+        gap: 10px !important;
+    }
+    
+    .service-card {
+        padding: 12px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 6. CALENDAR - MOBILE CONTROLS */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Calendar container */
+    .calendar-reservation-container {
+        padding: 16px !important;
+        margin: 10px 0 !important;
+    }
+    
+    /* Calendar header */
+    .calendar-header {
+        flex-direction: column !important;
+        gap: 16px !important;
+        align-items: stretch !important;
+    }
+    
+    .calendar-title-section h3 {
+        font-size: 20px !important;
+        text-align: center;
+    }
+    
+    .calendar-title-section p {
+        font-size: 13px !important;
+        text-align: center;
+    }
+    
+    /* Service filter */
+    .service-filter {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .service-filter label {
+        font-size: 13px !important;
+    }
+    
+    .service-filter select {
+        width: 100% !important;
+        font-size: 14px !important;
+    }
+    
+    /* Calendar toolbar */
+    .fc-toolbar {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    
+    .fc-toolbar-chunk {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 18px !important;
+    }
+    
+    .fc-button {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }
+    
+    /* Calendar view buttons */
+    .fc-button-group {
+        display: flex !important;
+        gap: 4px !important;
+    }
+    
+    /* Calendar cells */
+    .fc-daygrid-day {
+        min-height: 60px !important;
+    }
+    
+    .fc-daygrid-day-number {
+        font-size: 13px !important;
+        padding: 4px !important;
+    }
+    
+    /* Calendar events */
+    .fc-event {
+        font-size: 11px !important;
+        padding: 2px 4px !important;
+    }
+    
+    .fc-event-title {
+        font-size: 10px !important;
+    }
+    
+    /* Calendar legend */
+    .calendar-legend {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        justify-content: center !important;
+    }
+    
+    .legend-item {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+    
+    /* Holiday names smaller on mobile */
+    .holiday-name {
+        font-size: 8px !important;
+        padding: 1px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .fc-toolbar-title {
+        font-size: 16px !important;
+    }
+    
+    .fc-button {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+    
+    .fc-daygrid-day {
+        min-height: 50px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 7. HEADER/TOP BAR - MOBILE STACKING */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    .top-header,
+    .enhanced-header {
+        padding: 12px 16px !important;
+        border-radius: 0 !important;
+    }
+    
+    .header-content {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    
+    .header-info {
+        width: 100% !important;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 12px !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .breadcrumb i {
+        font-size: 10px !important;
+    }
+    
+    /* Page title */
+    .page-title,
+    .enhanced-title {
+        font-size: 20px !important;
+    }
+    
+    .page-subtitle,
+    .enhanced-subtitle {
+        font-size: 12px !important;
+    }
+    
+    /* Header actions */
+    .header-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+    }
+    
+    .header-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Menu toggle button */
+    .menu-toggle {
+        display: flex !important;
+        width: 40px !important;
+        height: 40px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border: none !important;
+        color: white !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        font-size: 20px !important;
+    }
+    
+    /* Search bar in header */
+    .header-search {
+        width: 100% !important;
+    }
+    
+    .header-search input {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 18px !important;
+    }
+    
+    .breadcrumb {
+        font-size: 11px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 8. REPORTS MODULE - MOBILE CHARTS */
+/* ============================================================================ */
+
+@media (max-width: 1024px) {
+    .reports-charts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Reports summary cards */
+    .reports-summary-cards {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .report-card {
+        padding: 16px !important;
+    }
+    
+    .report-value {
+        font-size: 28px !important;
+    }
+    
+    .report-label {
+        font-size: 13px !important;
+    }
+    
+    /* Chart containers */
+    .chart-container {
+        padding: 16px !important;
+        margin: 12px 0 !important;
+    }
+    
+    .chart-title {
+        font-size: 16px !important;
+    }
+    
+    /* Chart canvas responsive */
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Reports table */
+    .reports-table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    .reports-table {
+        font-size: 13px !important;
+    }
+    
+    .reports-table th,
+    .reports-table td {
+        padding: 8px !important;
+    }
+    
+    /* Export buttons */
+    .export-buttons {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .export-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .report-value {
+        font-size: 24px !important;
+    }
+    
+    .chart-title {
+        font-size: 14px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 9. VIEW/EDIT MODALS - MOBILE FORMS */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    /* View reservation modal */
+    .view-reservation-modal .modal-content,
+    .edit-reservation-modal .modal-content {
+        width: 95% !important;
+        max-width: 95vw !important;
+        margin: 10px !important;
+        max-height: 90vh !important;
+    }
+    
+    .modal-content.large-modal {
+        width: 95% !important;
+        max-height: 90vh !important;
+    }
+    
+    /* Modal sections */
+    .modal-section {
+        padding: 16px !important;
+    }
+    
+    .section-title {
+        font-size: 16px !important;
+    }
+    
+    /* Info grid to single column */
+    .info-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .info-item {
+        padding: 12px !important;
+    }
+    
+    .info-label {
+        font-size: 12px !important;
+    }
+    
+    .info-value {
+        font-size: 14px !important;
+    }
+    
+    /* Edit form fields */
+    .edit-form-row {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    /* Modal tabs */
+    .modal-tabs {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+    
+    .modal-tab {
+        flex: 1 1 45% !important;
+        font-size: 13px !important;
+        padding: 10px 12px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 10. FILTERS & SEARCH - MOBILE LAYOUT */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Table controls */
+    .table-controls {
+        flex-direction: column !important;
+        gap: 12px !important;
+        align-items: stretch !important;
+    }
+    
+    /* Search section */
+    .search-section {
+        width: 100% !important;
+    }
+    
+    .search-input-wrapper {
+        width: 100% !important;
+    }
+    
+    .search-input {
+        width: 100% !important;
+        font-size: 14px !important;
+    }
+    
+    /* Filter section */
+    .filter-section {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .filter-group {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+    }
+    
+    .filter-select {
+        width: 100% !important;
+        font-size: 14px !important;
+    }
+    
+    /* Filter pills */
+    .filter-pills {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    .filter-pill {
+        font-size: 12px !important;
+        padding: 6px 12px !important;
+    }
+    
+    /* Action buttons group */
+    .action-buttons-group {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .action-buttons-group .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Date range picker */
+    .date-range-picker {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .date-input {
+        width: 100% !important;
+    }
+    
+    /* Pagination */
+    .pagination {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 4px !important;
+    }
+    
+    .pagination-btn {
+        padding: 6px 10px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* ============================================================================ */
+/* 11. GENERAL MOBILE UTILITIES */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Main content area */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 12px !important;
+    }
+    
+    /* Module content */
+    .module-content {
+        padding: 0 !important;
+    }
+    
+    /* Cards and containers */
+    .card,
+    .container-fluid {
+        border-radius: 12px !important;
+        padding: 16px !important;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 10px 16px !important;
+        font-size: 14px !important;
+    }
+    
+    .btn-sm {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+    }
+    
+    .btn-lg {
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Icons */
+    .icon-lg {
+        font-size: 32px !important;
+    }
+    
+    .icon-md {
+        font-size: 24px !important;
+    }
+    
+    .icon-sm {
+        font-size: 16px !important;
+    }
+    
+    /* Typography */
+    h1 { font-size: 24px !important; }
+    h2 { font-size: 20px !important; }
+    h3 { font-size: 18px !important; }
+    h4 { font-size: 16px !important; }
+    h5 { font-size: 14px !important; }
+    h6 { font-size: 13px !important; }
+    
+    /* Spacing utilities */
+    .mb-4 { margin-bottom: 16px !important; }
+    .mb-3 { margin-bottom: 12px !important; }
+    .mb-2 { margin-bottom: 8px !important; }
+    .mt-4 { margin-top: 16px !important; }
+    .mt-3 { margin-top: 12px !important; }
+    .mt-2 { margin-top: 8px !important; }
+    
+    /* Hide on mobile */
+    .hide-mobile {
+        display: none !important;
+    }
+    
+    /* Show only on mobile */
+    .show-mobile {
+        display: block !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 8px !important;
+    }
+    
+    .card {
+        padding: 12px !important;
+    }
+    
+    h1 { font-size: 20px !important; }
+    h2 { font-size: 18px !important; }
+    h3 { font-size: 16px !important; }
+}
+
+/* ============================================================================ */
+/* 12. LANDSCAPE ORIENTATION FIXES */
+/* ============================================================================ */
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .modal-content {
+        max-height: 95vh !important;
+        overflow-y: auto !important;
+    }
+    
+    .modal-body {
+        max-height: calc(95vh - 120px) !important;
+    }
+    
+    .sidebar {
+        overflow-y: auto !important;
+    }
+}
+
+/* ============================================================================ */
+/* 13. PRINT STYLES - MOBILE FRIENDLY */
+/* ============================================================================ */
+
+@media print {
+    .sidebar,
+    .menu-toggle,
+    .header-actions,
+    .action-buttons,
+    .btn,
+    .filter-section,
+    .pagination {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .reservations-table,
+    .events-table {
+        display: table !important;
+    }
+    
+    .reservations-table thead,
+    .events-table thead {
+        display: table-header-group !important;
+    }
+    
+    .reservations-table tr,
+    .events-table tr {
+        display: table-row !important;
+        page-break-inside: avoid !important;
+    }
+    
+    .reservations-table td,
+    .events-table td {
+        display: table-cell !important;
+        border: 1px solid #ddd !important;
+    }
+}
+
+/* ============================================================================ */
+/* 14. ACCESSIBILITY IMPROVEMENTS */
+/* ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Larger touch targets */
+    button,
+    .btn,
+    a,
+    input,
+    select {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    /* Better focus indicators */
+    button:focus,
+    .btn:focus,
+    a:focus,
+    input:focus,
+    select:focus {
+        outline: 3px solid #0891b2 !important;
+        outline-offset: 2px !important;
+    }
+}
+
+/* ============================================================================ */
+/* END OF MOBILE RESPONSIVE STYLES */
+/* ============================================================================ */

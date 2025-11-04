@@ -1,0 +1,467 @@
+/* Payment System Styles for ChurchEase */
+
+/* Payment Section Styling */
+.payment-summary-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b);
+}
+
+.payment-summary-card h6 {
+    margin: 0 0 20px 0;
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.payment-summary-card h6 i {
+    color: #3b82f6;
+}
+
+/* Form Field Styling */
+.readonly-field {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #475569 !important;
+    cursor: not-allowed;
+    font-weight: 600;
+}
+
+.amount-highlight {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
+    border-color: #3b82f6 !important;
+    color: #1e40af !important;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.balance-highlight {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    border-color: #f59e0b !important;
+    color: #92400e !important;
+    font-weight: 700;
+}
+
+/* GCash Reference Field */
+#gcashReferenceGroup {
+    background: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+#gcashReferenceGroup label {
+    color: #0c4a6e;
+    font-weight: 600;
+}
+
+#gcashReference {
+    border-color: #0ea5e9;
+}
+
+.form-help {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Payment Status Indicators */
+.payment-status-indicator {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #f59e0b;
+}
+
+.status-pending::before {
+    background: #f59e0b;
+}
+
+.status-partial {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #3b82f6;
+}
+
+.status-partial::before {
+    background: #3b82f6;
+}
+
+.status-paid {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.status-paid::before {
+    background: #10b981;
+}
+
+/* Discount Value Group Animation */
+#discountValueGroup {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#discountValueGroup.show {
+    max-height: 200px;
+    opacity: 1;
+}
+
+#discountValueGroup.hide {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Payment Method Selection */
+#paymentMethod, #paymentType {
+    border: 2px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+#paymentMethod:focus, #paymentType:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Form Section Header Enhancement */
+.form-section h5 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.form-section h5 i {
+    color: #3b82f6;
+    font-size: 18px;
+}
+
+/* Enhanced Form Actions */
+.form-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.form-actions .btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.form-actions .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-summary-card {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .amount-highlight, .balance-highlight {
+        font-size: 14px;
+    }
+}
+
+/* Animation for payment calculations */
+@keyframes calculatePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.calculating {
+    animation: calculatePulse 0.3s ease;
+}
+
+/* Payment Summary Table Style */
+.payment-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payment-details-table th,
+.payment-details-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.payment-details-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #374151;
+}
+
+.payment-details-table .amount {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.payment-details-table .highlight {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Loading States */
+.payment-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.payment-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #e2e8f0;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Stipendium Badge Styles */
+.stipendium-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid;
+}
+
+.stipendium-pending {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #f59e0b;
+}
+
+.stipendium-partial {
+    background: #dbeafe;
+    color: #1e40af;
+    border-color: #3b82f6;
+}
+
+.stipendium-paid {
+    background: #d1fae5;
+    color: #065f46;
+    border-color: #10b981;
+}
+
+.stipendium-na {
+    background: #f1f5f9;
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+/* Stipendium status cell styling */
+.stipendium-status-cell {
+    text-align: center;
+    padding: 8px 12px;
+}
+
+/* Priest Badge Styles */
+.priest-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid;
+}
+
+.priest-assigned {
+    background: #e0f2fe;
+    color: #0c4a6e;
+    border-color: #0ea5e9;
+}
+
+.priest-unassigned {
+    background: #fef2f2;
+    color: #991b1b;
+    border-color: #ef4444;
+}
+
+.priest-cell {
+    text-align: center;
+    padding: 8px 12px;
+}
+
+/* Additional Status Badge Styles */
+.status-waiting-priest {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #f59e0b;
+}
+
+.status-waiting-priest::before {
+    background: #f59e0b;
+}
+
+.status-confirmed {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.status-confirmed::before {
+    background: #10b981;
+}
+
+.status-completed {
+    background: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid #6366f1;
+}
+
+.status-completed::before {
+    background: #6366f1;
+}
+
+.status-cancelled {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.status-cancelled::before {
+    background: #ef4444;
+}
+
+.status-declined {
+    background: #fdf2f8;
+    color: #be185d;
+    border: 1px solid #ec4899;
+}
+
+.status-declined::before {
+    background: #ec4899;
+}
+
+/* Priest Selection Dropdown Styling */
+#assignedPriest {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+#assignedPriest:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+#assignedPriest:invalid {
+    border-color: #ef4444;
+}
+
+#assignedPriest option {
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Priest section styling */
+.form-section h5 i.fa-user {
+    color: #6366f1;
+}
+
+/* Required field indicator */
+.required {
+    color: #ef4444;
+    font-weight: bold;
+}
