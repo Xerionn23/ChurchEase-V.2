@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurchEase - Reports Print Template</title>
+    <style>
+        /* Print-specific styles */
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+        }
+        
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
+            background: #fff;
+            line-height: 1.6;
+        }
+        
+        /* Header Section */
+        .report-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 3px solid #2563eb;
+            margin-bottom: 30px;
+        }
+        
+        .church-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            display: block;
+        }
+        
+        .church-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .church-address {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 3px;
+        }
+        
+        .church-contact {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        
+        .report-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .report-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        
+        .report-date {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        /* Report Content */
+        .report-content {
+            padding: 20px 0;
+        }
+        
+        .report-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e40af;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f9fafb;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-sublabel {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        /* Tables */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            font-size: 13px;
+        }
+        
+        .report-table thead {
+            background: #1e40af;
+            color: white;
+        }
+        
+        .report-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        .report-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .report-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        .report-table tbody tr:hover {
+            background: #f3f4f6;
+        }
+        
+        /* Service Badges */
+        .service-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .service-badge.wedding {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .service-badge.baptism {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .service-badge.funeral {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .service-badge.confirmation {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.confirmed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-badge.completed {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        /* Summary Box */
+        .summary-box {
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            padding: 20px;
+            background: #eff6ff;
+            margin-bottom: 30px;
+        }
+        
+        .summary-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #bfdbfe;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 16px;
+            padding-top: 15px;
+            margin-top: 10px;
+            border-top: 2px solid #2563eb;
+        }
+        
+        .summary-label {
+            color: #374151;
+        }
+        
+        .summary-value {
+            color: #1e40af;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .report-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+        }
+        
+        .signature-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .signature-box {
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 2px solid #000;
+            margin-top: 50px;
+            padding-top: 8px;
+            font-weight: 600;
+        }
+        
+        .signature-title {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .footer-note {
+            font-size: 11px;
+            color: #9ca3af;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        
+        /* Print Button */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .print-button:hover {
+            background: #1e40af;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .print-button i {
+            margin-right: 8px;
+        }
+        
+        /* Chart Placeholder */
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Print Button (Hidden when printing) -->
+    <button class="print-button no-print" onclick="window.print()">
+        <i class="fas fa-print"></i>
+        Print Report
+    </button>
+
+    <!-- Report Header -->
+    <div class="report-header">
+        <!-- Church Logo -->
+        <img src="../static/images/church-logo.png" alt="Church Logo" class="church-logo" onerror="this.style.display='none'">
+        
+        <div class="church-name">ChurchEase Parish</div>
+        <div class="church-address">123 Church Street, Barangay San Jose, City, Province</div>
+        <div class="church-contact">
+            Tel: (123) 456-7890 | Email: admin@churchease.com | Office Hours: Tue-Sun, 8:00 AM - 5:00 PM
+        </div>
+        
+        <div class="report-title" id="reportTitle">Monthly Reports & Analytics</div>
+        <div class="report-subtitle" id="reportSubtitle">Comprehensive Church Operations Report</div>
+        <div class="report-date" id="reportDate">Generated on: <span id="generatedDate"></span></div>
+    </div>
+
+    <!-- Report Content -->
+    <div class="report-content">
+        
+        <!-- Summary Statistics Section -->
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-chart-line"></i> Summary Statistics
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalReservations">0</div>
+                    <div class="stat-label">Total Reservations</div>
+                    <div class="stat-sublabel">This period</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value" id="totalStipendium">₱0</div>
+                    <div class="stat-label">Total Stipendium</div>
+                    <div class="stat-sublabel">All collections</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value" id="pendingApprovals">0</div>
+                    <div class="stat-label">Pending Approvals</div>
+                    <div class="stat-sublabel">Needs attention</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Reservations Section -->
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-calendar-alt"></i> Monthly Approved Reservations
+            </div>
+            
+            <table class="report-table" id="monthlyReservationsTable">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th style="text-align: center;">Reservations Count</th>
+                        <th style="text-align: right;">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Service Type Distribution Section -->
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-church"></i> Service Type Distribution
+            </div>
+            
+            <table class="report-table" id="serviceDistributionTable">
+                <thead>
+                    <tr>
+                        <th>Service Type</th>
+                        <th style="text-align: center;">Count</th>
+                        <th style="text-align: right;">Stipendium</th>
+                        <th style="text-align: right;">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Stipendium Summary Section -->
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-peso-sign"></i> Stipendium Summary
+            </div>
+            
+            <div class="summary-box">
+                <div class="summary-title">Financial Overview</div>
+                <div class="summary-item">
+                    <span class="summary-label">Wedding Services:</span>
+                    <span class="summary-value" id="weddingStipendium">₱0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Baptism Services:</span>
+                    <span class="summary-value" id="baptismStipendium">₱0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Funeral Services:</span>
+                    <span class="summary-value" id="funeralStipendium">₱0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Confirmation Services:</span>
+                    <span class="summary-value" id="confirmationStipendium">₱0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">TOTAL STIPENDIUM:</span>
+                    <span class="summary-value" id="totalStipendiumSummary">₱0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Statistics Section -->
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-user-check"></i> Attendance Statistics
+            </div>
+            
+            <table class="report-table" id="attendanceTable">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th style="text-align: center;">Count</th>
+                        <th style="text-align: right;">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Reservations Section -->
+        <div class="report-section page-break">
+            <div class="section-title">
+                <i class="fas fa-list"></i> Recent Approved Reservations
+            </div>
+            
+            <table class="report-table" id="recentReservationsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Client Name</th>
+                        <th>Service Type</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Stipendium</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Report Footer -->
+    <div class="report-footer">
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line">Administrator</div>
+                <div class="signature-title">Prepared By</div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line">Parish Priest</div>
+                <div class="signature-title">Approved By</div>
+            </div>
+        </div>
+        
+        <div class="footer-note">
+            This is a computer-generated report from ChurchEase Management System.<br>
+            For inquiries, please contact the church office during office hours (Tuesday-Sunday, 8:00 AM - 5:00 PM).<br>
+            Note: Office is closed every Monday.
+        </div>
+    </div>
+
+    <script>
+        // Set current date
+        document.getElementById('generatedDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Function to populate report with data
+        async function populateReport() {
+            try {
+                // Get URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const reportType = urlParams.get('type') || 'monthly';
+                const selectedMonth = urlParams.get('month'); // Get selected month parameter
+                const selectedYear = urlParams.get('year'); // Get selected year parameter
+                
+                console.log('📅 Report Parameters:', { reportType, selectedMonth, selectedYear });
+                
+                // Update report title if month is selected
+                if (selectedMonth && selectedYear) {
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                       'July', 'August', 'September', 'October', 'November', 'December'];
+                    const monthName = monthNames[parseInt(selectedMonth) - 1];
+                    
+                    document.getElementById('reportTitle').textContent = `${monthName} ${selectedYear} Calendar Report`;
+                    document.getElementById('reportSubtitle').textContent = `Detailed Schedule for ${monthName} ${selectedYear}`;
+                    
+                    // Update section title for detailed schedule
+                    const sectionTitle = document.querySelector('.report-section.page-break .section-title');
+                    if (sectionTitle) {
+                        sectionTitle.innerHTML = `<i class="fas fa-list"></i> Detailed Schedule for ${monthName} ${selectedYear}`;
+                    }
+                }
+                
+                // Load summary statistics
+                await loadSummaryStats();
+                
+                // Load monthly reservations
+                await loadMonthlyReservations();
+                
+                // Load service distribution
+                await loadServiceDistribution();
+                
+                // Load attendance statistics
+                await loadAttendanceStats();
+                
+                // Load recent reservations (filtered by month if provided)
+                await loadRecentReservations(selectedMonth, selectedYear);
+                
+                console.log('✅ Report data loaded successfully');
+            } catch (error) {
+                console.error('Error loading report data:', error);
+            }
+        }
+
+        // Load summary statistics
+        async function loadSummaryStats() {
+            try {
+                const response = await fetch('/api/reports/summary');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    document.getElementById('totalReservations').textContent = data.total_reservations || 0;
+                    document.getElementById('totalStipendium').textContent = '₱' + (data.total_revenue || 0).toLocaleString();
+                    document.getElementById('pendingApprovals').textContent = data.pending_approvals || 0;
+                }
+            } catch (error) {
+                console.error('Error loading summary stats:', error);
+            }
+        }
+
+        // Load monthly reservations
+        async function loadMonthlyReservations() {
+            try {
+                const response = await fetch('/api/reports/monthly-reservations');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    const tbody = document.querySelector('#monthlyReservationsTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    const total = data.counts.reduce((a, b) => a + b, 0);
+                    
+                    data.labels.forEach((month, index) => {
+                        const count = data.counts[index];
+                        const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${month}</td>
+                            <td style="text-align: center;">${count}</td>
+                            <td style="text-align: right;">${percentage}%</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading monthly reservations:', error);
+            }
+        }
+
+        // Load service distribution
+        async function loadServiceDistribution() {
+            try {
+                const response = await fetch('/api/reports/service-distribution');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    const tbody = document.querySelector('#serviceDistributionTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    const total = data.counts.reduce((a, b) => a + b, 0);
+                    let totalStipendium = 0;
+                    
+                    data.labels.forEach((service, index) => {
+                        const count = data.counts[index];
+                        const revenue = data.revenue ? data.revenue[index] : 0;
+                        const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                        
+                        totalStipendium += revenue;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><span class="service-badge ${service.toLowerCase()}">${service}</span></td>
+                            <td style="text-align: center;">${count}</td>
+                            <td style="text-align: right;">₱${revenue.toLocaleString()}</td>
+                            <td style="text-align: right;">${percentage}%</td>
+                        `;
+                        tbody.appendChild(row);
+                        
+                        // Update summary box
+                        const serviceId = service.toLowerCase() + 'Stipendium';
+                        const element = document.getElementById(serviceId);
+                        if (element) {
+                            element.textContent = '₱' + revenue.toLocaleString();
+                        }
+                    });
+                    
+                    document.getElementById('totalStipendiumSummary').textContent = '₱' + totalStipendium.toLocaleString();
+                }
+            } catch (error) {
+                console.error('Error loading service distribution:', error);
+            }
+        }
+
+        // Load attendance statistics
+        async function loadAttendanceStats() {
+            try {
+                const response = await fetch('/api/reservations/all');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const reservations = result.data;
+                    
+                    let attended = 0;
+                    let noShow = 0;
+                    let pending = 0;
+                    let cancelled = 0;
+                    
+                    reservations.forEach(reservation => {
+                        const status = reservation.attendance_status || 'pending';
+                        switch(status) {
+                            case 'attended': attended++; break;
+                            case 'no_show': noShow++; break;
+                            case 'cancelled': cancelled++; break;
+                            default: pending++; break;
+                        }
+                    });
+                    
+                    const total = attended + noShow + pending + cancelled;
+                    const tbody = document.querySelector('#attendanceTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    const attendanceData = [
+                        { label: 'Attended', count: attended, color: '#10b981' },
+                        { label: 'No-Show', count: noShow, color: '#ef4444' },
+                        { label: 'Pending', count: pending, color: '#f59e0b' },
+                        { label: 'Cancelled', count: cancelled, color: '#6b7280' }
+                    ];
+                    
+                    attendanceData.forEach(item => {
+                        const percentage = total > 0 ? ((item.count / total) * 100).toFixed(1) : 0;
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${item.label}</strong></td>
+                            <td style="text-align: center;">${item.count}</td>
+                            <td style="text-align: right;">${percentage}%</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading attendance stats:', error);
+            }
+        }
+
+        // Load recent reservations
+        async function loadRecentReservations(selectedMonth, selectedYear) {
+            try {
+                const response = await fetch('/api/reservations/all');
+                const result = await response.json();
+                
+                if (result.success) {
+                    let reservations = result.data
+                        .filter(r => ['approved', 'confirmed', 'completed'].includes(r.status));
+                    
+                    // Filter by selected month and year if provided
+                    if (selectedMonth && selectedYear) {
+                        const monthIndex = parseInt(selectedMonth) - 1; // Convert to 0-based index
+                        const year = parseInt(selectedYear);
+                        
+                        console.log(`🔍 Filtering reservations for month: ${selectedMonth} (${monthIndex}), year: ${year}`);
+                        
+                        reservations = reservations.filter(r => {
+                            const reservationDate = new Date(r.date);
+                            const reservationMonth = reservationDate.getMonth();
+                            const reservationYear = reservationDate.getFullYear();
+                            
+                            return reservationMonth === monthIndex && reservationYear === year;
+                        });
+                        
+                        console.log(`✅ Found ${reservations.length} reservations for selected month`);
+                    }
+                    
+                    // Sort by date (most recent first)
+                    reservations.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    const tbody = document.querySelector('#recentReservationsTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    if (reservations.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px; color: #9ca3af;">
+                                    <i class="fas fa-calendar-times" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+                                    No approved reservations found for the selected period
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    reservations.forEach(reservation => {
+                        const stipendium = reservation.total_amount || 0;
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>#${reservation.reservation_id || reservation.id}</td>
+                            <td>${reservation.contact_name}</td>
+                            <td><span class="service-badge ${reservation.service_type}">${reservation.service_type}</span></td>
+                            <td>${new Date(reservation.date).toLocaleDateString()}</td>
+                            <td><span class="status-badge ${reservation.status}">${reservation.status.toUpperCase()}</span></td>
+                            <td style="text-align: right;">₱${stipendium.toLocaleString()}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading recent reservations:', error);
+            }
+        }
+
+        // Load data when page loads
+        window.addEventListener('DOMContentLoaded', populateReport);
+    </script>
+</body>
+</html>

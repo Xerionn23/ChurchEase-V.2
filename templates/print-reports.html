@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurchEase - Reports & Analytics</title>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+
+        /* Header Section */
+        .report-header {
+            text-align: center;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .church-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+        }
+
+        .church-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .church-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+
+        .church-address {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 3px;
+        }
+
+        .report-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .report-date {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        /* Summary Statistics */
+        .summary-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background: #f9fafb;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tables */
+        .table-section {
+            margin-bottom: 30px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table thead {
+            background: #f3f4f6;
+        }
+
+        .data-table th {
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #d1d5db;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Service Badges */
+        .service-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .service-badge.wedding {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .service-badge.baptism {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .service-badge.funeral {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .service-badge.confirmation {
+            background: #e9d5ff;
+            color: #6b21a8;
+        }
+
+        /* Chart Placeholder */
+        .chart-section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .chart-placeholder {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: #9ca3af;
+            background: #f9fafb;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .report-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .signature-line {
+            border-top: 1px solid #000;
+            margin-top: 40px;
+            padding-top: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .signature-title {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        /* Print Button */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .print-button:hover {
+            background: #1e40af;
+        }
+
+        /* Two Column Layout for Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-item {
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Button -->
+    <button class="print-button no-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Report
+    </button>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="report-header">
+            <div class="church-logo">
+                <img src="/static/images/church-logo.png" alt="Church Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%232563eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22 font-weight=%22bold%22%3ECE%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div class="church-name">ChurchEase Parish</div>
+            <div class="church-address">123 Church Street, City, Province</div>
+            <div class="church-address">Tel: (123) 456-7890 | Email: info@churchease.com</div>
+            <div class="report-title">Reports & Analytics</div>
+            <div class="report-date" id="reportDate">Generated on: <span id="currentDate"></span></div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="summary-section">
+            <h2 class="section-title">Summary Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="printTotalReservations">0</div>
+                    <div class="stat-label">Total Reservations</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="printTotalStipendium">₱0</div>
+                    <div class="stat-label">Total Stipendium</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="printPendingApprovals">0</div>
+                    <div class="stat-label">Pending Approvals</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Approved Reservations -->
+        <div class="chart-section">
+            <h2 class="section-title">Monthly Approved Reservations</h2>
+            <div class="chart-placeholder">
+                <canvas id="printMonthlyChart" width="600" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Service Distribution & Attendance -->
+        <div class="charts-grid">
+            <div class="chart-item">
+                <h2 class="section-title">Service Type Distribution</h2>
+                <div class="chart-placeholder">
+                    <canvas id="printServiceChart" width="300" height="300"></canvas>
+                </div>
+            </div>
+            <div class="chart-item">
+                <h2 class="section-title">Attendance Rate</h2>
+                <div class="chart-placeholder">
+                    <canvas id="printAttendanceChart" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stipendium Trends -->
+        <div class="chart-section">
+            <h2 class="section-title">Stipendium Trends (Last 6 Months)</h2>
+            <div class="chart-placeholder">
+                <canvas id="printStipendiumChart" width="600" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- Most Popular Services Table -->
+        <div class="table-section">
+            <h2 class="section-title">Most Popular Services</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Service Type</th>
+                        <th>Total Bookings</th>
+                        <th>Total Stipendium</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody id="servicesTableBody">
+                    <tr>
+                        <td><span class="service-badge wedding">Wedding</span></td>
+                        <td>0</td>
+                        <td>₱0</td>
+                        <td>0%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line">Administrator</div>
+                <div class="signature-title">Prepared By</div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line">Parish Priest</div>
+                <div class="signature-title">Reviewed By</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="report-footer">
+            <p><strong>ChurchEase Management System</strong></p>
+            <p>This is a computer-generated report. No signature is required.</p>
+            <p>© 2024 ChurchEase Parish. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Load data from parent window or fetch from API
+        async function loadReportData() {
+            try {
+                // Load Summary Statistics
+                const summaryResponse = await fetch('/api/reports/summary');
+                const summaryResult = await summaryResponse.json();
+                
+                if (summaryResult.success) {
+                    const data = summaryResult.data;
+                    document.getElementById('printTotalReservations').textContent = data.total_reservations || 0;
+                    document.getElementById('printTotalStipendium').textContent = `₱${(data.total_revenue || 0).toLocaleString()}`;
+                    document.getElementById('printPendingApprovals').textContent = data.pending_approvals || 0;
+                }
+
+                // Load Monthly Reservations Chart
+                const monthlyResponse = await fetch('/api/reports/monthly-reservations');
+                const monthlyResult = await monthlyResponse.json();
+                
+                if (monthlyResult.success) {
+                    createMonthlyChart(monthlyResult.data);
+                }
+
+                // Load Service Distribution
+                const serviceResponse = await fetch('/api/reports/service-distribution');
+                const serviceResult = await serviceResponse.json();
+                
+                if (serviceResult.success) {
+                    createServiceChart(serviceResult.data);
+                    populateServicesTable(serviceResult.data);
+                }
+
+                // Load Stipendium Trends
+                const stipendiumResponse = await fetch('/api/reports/revenue-trends');
+                const stipendiumResult = await stipendiumResponse.json();
+                
+                if (stipendiumResult.success) {
+                    createStipendiumChart(stipendiumResult.data);
+                }
+
+                // Load Attendance Data
+                const attendanceResponse = await fetch('/api/reservations/all');
+                const attendanceResult = await attendanceResponse.json();
+                
+                if (attendanceResult.success) {
+                    createAttendanceChart(attendanceResult.data);
+                }
+
+            } catch (error) {
+                console.error('Error loading report data:', error);
+            }
+        }
+
+        // Create Monthly Reservations Chart
+        function createMonthlyChart(data) {
+            const ctx = document.getElementById('printMonthlyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Approved Reservations',
+                        data: data.counts,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create Service Distribution Chart
+        function createServiceChart(data) {
+            const ctx = document.getElementById('printServiceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.counts,
+                        backgroundColor: ['#fbbf24', '#60a5fa', '#9ca3af', '#c084fc'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create Stipendium Trends Chart
+        function createStipendiumChart(data) {
+            const ctx = document.getElementById('printStipendiumChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Stipendium',
+                        data: data.revenue,
+                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                        borderColor: '#10b981',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₱' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create Attendance Chart
+        function createAttendanceChart(reservations) {
+            let attended = 0, noShow = 0, pending = 0, cancelled = 0;
+            
+            reservations.forEach(reservation => {
+                const status = reservation.attendance_status || 'pending';
+                switch(status) {
+                    case 'attended': attended++; break;
+                    case 'no_show': noShow++; break;
+                    case 'cancelled': cancelled++; break;
+                    default: pending++; break;
+                }
+            });
+
+            const ctx = document.getElementById('printAttendanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Attended', 'No-Show', 'Pending', 'Cancelled'],
+                    datasets: [{
+                        data: [attended, noShow, pending, cancelled],
+                        backgroundColor: ['#10b981', '#ef4444', '#f59e0b', '#6b7280'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate Services Table
+        function populateServicesTable(data) {
+            const tbody = document.getElementById('servicesTableBody');
+            tbody.innerHTML = '';
+            
+            const total = data.counts.reduce((a, b) => a + b, 0);
+            
+            data.labels.forEach((label, index) => {
+                const count = data.counts[index];
+                const revenue = data.revenue ? data.revenue[index] : 0;
+                const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                const serviceClass = label.toLowerCase();
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="service-badge ${serviceClass}">${label}</span></td>
+                    <td>${count}</td>
+                    <td>₱${revenue.toLocaleString()}</td>
+                    <td>${percentage}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Load data when page loads
+        window.addEventListener('load', loadReportData);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurchEase - Priest Dashboard</title>
+    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='ChurchLogo.jpg') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard-styles.css') }}">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    
+    <style>
+        /* ============================================================================ */
+        /* LOGIN PAGE COLOR PALETTE - APPLIED GLOBALLY */
+        /* ============================================================================ */
+        :root {
+            --primary-dark: #1e3a8a;
+            --primary-mid: #0369a1;
+            --primary-light: #0891b2;
+            --primary-accent: #1e40af;
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #0369a1 50%, #0891b2 100%);
+            --primary-gradient-reverse: linear-gradient(135deg, #0891b2 0%, #0369a1 50%, #1e3a8a 100%);
+            --primary-shadow: rgba(30, 58, 138, 0.3);
+            --primary-glow: rgba(8, 145, 178, 0.1);
+            --border-radius-lg: 20px;
+            --border-radius-md: 15px;
+            --border-radius-sm: 10px;
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #0369a1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Main Content Adjustments for Sidebar */
+        .main-content {
+            margin-left: 280px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            background: var(--bg-light);
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 80px;
+        }
+
+        .content-wrapper {
+            padding: 0;
+        }
+
+        /* Enhanced Top Header with Welcome Banner Design */
+        .top-header {
+            background: var(--primary-gradient);
+            border-radius: 0 0 20px 20px;
+            padding: 20px 32px;
+            margin-bottom: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 8px 32px var(--primary-shadow);
+        }
+        
+        .top-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .menu-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-right: 20px;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .header-info h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: white !important;
+        }
+
+        .header-info p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        /* Dashboard Content Container */
+        .dashboard-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 40px 40px;
+        }
+
+        /* User Avatar in Sidebar */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Removed - Welcome section now in header */
+
+        /* Enhanced Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-light);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Enhanced Calendar Section */
+        .calendar-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            margin-bottom: 32px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calendar-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .refresh-btn {
+            padding: 12px 24px;
+            background: var(--primary-gradient) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: var(--border-radius-md) !important;
+            cursor: pointer;
+            font-weight: 600 !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px var(--primary-shadow) !important;
+            transition: all 0.3s ease !important;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .refresh-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .refresh-btn:hover::before {
+            left: 100%;
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary-gradient-reverse) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 20px var(--primary-shadow) !important;
+        }
+
+        /* FullCalendar Customization */
+        #priestCalendar {
+            max-width: 100%;
+        }
+
+        .fc {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .fc-toolbar-title {
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            color: var(--text-dark) !important;
+        }
+
+        .fc-button {
+            background: var(--primary) !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+        }
+
+        .fc-button:hover {
+            background: var(--primary-light) !important;
+        }
+
+        .fc-event {
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 4px 8px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+        }
+
+        /* Service Type Colors */
+        .fc-event.wedding {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+            color: #92400e !important;
+        }
+
+        .fc-event.baptism {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
+            color: #1e40af !important;
+        }
+
+        .fc-event.funeral {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
+            color: #374151 !important;
+        }
+
+        .fc-event.confirmation {
+            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%) !important;
+            color: #6b21a8 !important;
+        }
+
+        /* Reservation Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 24px;
+            border-radius: 16px 16px 0 0;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--text-dark);
+            text-align: right;
+        }
+
+        .service-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .service-badge.wedding {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #92400e;
+        }
+
+        .service-badge.baptism {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: #1e40af;
+        }
+
+        .service-badge.funeral {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            color: #374151;
+        }
+
+        .service-badge.confirmation {
+            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+            color: #6b21a8;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.approved {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Sidebar Styling */
+        .sidebar {
+            background: var(--primary-gradient);
+            box-shadow: 4px 0 20px var(--primary-shadow);
+        }
+
+        .sidebar-header {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar .logo-text {
+            color: white !important;
+            font-weight: 700 !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-left: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: white !important;
+        }
+
+        .nav-link i {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .nav-link.active i {
+            color: white !important;
+        }
+
+        .nav-text {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .nav-link.active .nav-text {
+            color: white !important;
+        }
+
+        .nav-category {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-weight: 600 !important;
+        }
+        
+        .user-name, .user-role {
+            color: white !important;
+        }
+
+        .user-avatar {
+            background: white !important;
+            color: var(--primary-dark) !important;
+            font-weight: 700 !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 16px 20px;
+            }
+
+            .welcome-section h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='ChurchLogo.jpg') }}" alt="Church Logo" class="logo-image">
+                <span class="logo-text">ChurchEase</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-category">Main Menu</div>
+            <div class="nav-item">
+                <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-calendar"></i>
+                    <span class="nav-text">My Schedule</span>
+                    <span class="nav-tooltip">My Schedule</span>
+                </a>
+            </div>
+            <!-- User Profile Section - Positioned at Bottom -->
+            <div class="nav-item user-profile-nav">
+                <div class="nav-link" style="position: relative; cursor: pointer;" id="sidebarUserProfile">
+                    <div class="user-avatar">{{ user.full_name[0] if user.full_name else 'P' }}{{ user.full_name.split()[1][0] if user.full_name and ' ' in user.full_name else 'R' }}</div>
+                    <div class="nav-text user-info">
+                        <div class="user-name">{{ user.full_name or 'Father' }}</div>
+                        <div class="user-role">Priest</div>
+                    </div>
+                    <i class="fas fa-chevron-up" style="margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.7); transition: transform 0.3s;" id="dropdownArrow"></i>
+                    <span class="nav-tooltip">Profile</span>
+                </div>
+                <!-- User Dropdown for Sidebar -->
+                <div class="user-dropdown sidebar-dropdown" id="sidebarUserDropdown" style="display: none;">
+                    <div class="dropdown-header">
+                        <div class="dropdown-user-info">
+                            <div class="dropdown-avatar">{{ user.full_name[0] if user.full_name else 'P' }}{{ user.full_name.split()[1][0] if user.full_name and ' ' in user.full_name else 'R' }}</div>
+                            <div class="dropdown-user-details">
+                                <div class="dropdown-user-name">{{ user.full_name or 'Father' }}</div>
+                                <div class="dropdown-user-email">{{ user.email or 'priest@churchease.com' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="dropdown-item" id="myProfileBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" id="logoutLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+    
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="content-wrapper">
+            <!-- Enhanced Top Header -->
+            <header class="top-header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <button class="menu-toggle" id="menuToggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="header-info">
+                            <h1>Welcome, {{ user.full_name or 'Father' }}! 🙏</h1>
+                            <p>Here are your assigned reservations and schedule</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #dbeafe; color: #3b82f6;">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="todayCount">0</div>
+                <div class="stat-label">Today's Services</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #d1fae5; color: #10b981;">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="weekCount">0</div>
+                <div class="stat-label">This Week</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #fef3c7; color: #f59e0b;">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="monthCount">0</div>
+                <div class="stat-label">This Month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #ede9fe; color: #8b5cf6;">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total Assigned</div>
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="calendar-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar"></i>
+                    My Schedule
+                </h2>
+                <div style="display: flex; gap: 12px;">
+                    <button class="refresh-btn" id="refreshCalendar">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                    <button class="refresh-btn" id="printPriestCalendarBtn" style="background: linear-gradient(135deg, #228b22, #1a6b1a) !important;">
+                        <i class="fas fa-print"></i>
+                        Print
+                    </button>
+                </div>
+            </div>
+            <div id="priestCalendar"></div>
+        </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reservation Details Modal -->
+    <div class="modal" id="reservationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Reservation Details</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div id="profileSettingsModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 9999; justify-content: center; align-items: center;">
+        <div class="modal-content profile-modal" style="background: white; border-radius: 16px; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; max-height: 90vh; overflow-y: auto;">
+            <!-- Modal Header with Gradient Background -->
+            <div class="modal-header" style="background: linear-gradient(135deg, #1e40af 0%, #0369a1 100%); padding: 24px 28px; border-radius: 16px 16px 0 0; position: relative;">
+                <h2 style="margin: 0; color: #ffffff !important; font-size: 22px; font-weight: 600; display: flex; align-items: center; gap: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <i class="fas fa-user-circle" style="font-size: 24px; color: #ffffff !important;"></i>
+                    <span style="color: #ffffff !important;">My Profile</span>
+                </h2>
+                <button class="close-btn" id="closeProfileModal" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; font-size: 20px; cursor: pointer; color: #ffffff !important; padding: 8px; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <i class="fas fa-times" style="color: #ffffff !important;"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body with Better Spacing -->
+            <div class="modal-body" style="padding: 32px 28px;">
+                <form id="profileSettingsForm">
+                    <!-- Account Information Section -->
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;">
+                            <i class="fas fa-info-circle" style="color: #3b82f6; margin-right: 8px;"></i>
+                            Account Information
+                        </h3>
+                        
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="fullName" style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px; font-size: 14px;">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" value="{{ user.full_name or 'Father' }}" class="form-input" readonly style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: #f9fafb; color: #6b7280; cursor: not-allowed;">
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="email" style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px; font-size: 14px;">Email Address</label>
+                            <input type="email" id="email" name="email" value="{{ user.email or 'priest@churchease.com' }}" class="form-input" readonly style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: #f9fafb; color: #6b7280; cursor: not-allowed;">
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="userRole" style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px; font-size: 14px;">Role</label>
+                            <input type="text" id="userRole" name="userRole" value="Priest" class="form-input" readonly style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: #f9fafb; color: #6b7280; cursor: not-allowed;">
+                        </div>
+                    </div>
+                    
+                    <!-- Info Message -->
+                    <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 8px; margin-top: 20px;">
+                        <p style="margin: 0; color: #1e40af; font-size: 13px; display: flex; align-items: start; gap: 8px;">
+                            <i class="fas fa-info-circle" style="margin-top: 2px;"></i>
+                            <span>This information is view-only. Contact the system administrator to update your profile details.</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="padding: 20px 28px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 12px; border-radius: 0 0 16px 16px;">
+                <button type="button" class="btn btn-secondary" id="cancelProfileSettings" style="padding: 10px 24px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal" id="logoutModal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                <h3><i class="fas fa-sign-out-alt"></i> Confirm Logout</h3>
+                <button class="modal-close" id="closeLogoutModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 30px; text-align: center;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #f59e0b; margin-bottom: 20px;"></i>
+                <p style="font-size: 16px; color: #374151; margin-bottom: 30px;">
+                    Are you sure you want to logout?
+                </p>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button id="cancelLogout" style="padding: 10px 24px; background: #e5e7eb; color: #374151; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                        Cancel
+                    </button>
+                    <button id="confirmLogout" style="padding: 10px 24px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let calendar;
+        let allReservations = [];
+
+        // Initialize Calendar
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('priestCalendar');
+            
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                height: 'auto',
+                events: [],
+                eventClick: function(info) {
+                    showReservationDetails(info.event.extendedProps.reservation);
+                },
+                eventDidMount: function(info) {
+                    // Add tooltip
+                    info.el.title = `${info.event.title}\n${info.event.extendedProps.time}`;
+                }
+            });
+            
+            calendar.render();
+            loadReservations();
+        });
+
+        // Load Priest's Reservations
+        async function loadReservations() {
+            try {
+                const response = await fetch('/api/priest/reservations');
+                const data = await response.json();
+                
+                if (data.success) {
+                    allReservations = data.reservations;
+                    updateCalendar();
+                    updateStats();
+                } else {
+                    console.error('Failed to load reservations:', data.message);
+                }
+            } catch (error) {
+                console.error('Error loading reservations:', error);
+            }
+        }
+
+        // Update Calendar with Events
+        function updateCalendar() {
+            const events = allReservations.map(reservation => {
+                const serviceType = reservation.service_type.toLowerCase();
+                const time = formatTime(reservation.reservation_time);
+                
+                return {
+                    title: `${reservation.service_type} - ${reservation.client_name}`,
+                    start: reservation.reservation_date,
+                    className: serviceType,
+                    extendedProps: {
+                        reservation: reservation,
+                        time: time
+                    }
+                };
+            });
+            
+            calendar.removeAllEvents();
+            calendar.addEventSource(events);
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const weekFromNow = new Date(today);
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
+            
+            const monthFromNow = new Date(today);
+            monthFromNow.setMonth(monthFromNow.getMonth() + 1);
+            
+            let todayCount = 0;
+            let weekCount = 0;
+            let monthCount = 0;
+            
+            allReservations.forEach(reservation => {
+                const resDate = new Date(reservation.reservation_date);
+                resDate.setHours(0, 0, 0, 0);
+                
+                if (resDate.getTime() === today.getTime()) {
+                    todayCount++;
+                }
+                if (resDate >= today && resDate < weekFromNow) {
+                    weekCount++;
+                }
+                if (resDate >= today && resDate < monthFromNow) {
+                    monthCount++;
+                }
+            });
+            
+            document.getElementById('todayCount').textContent = todayCount;
+            document.getElementById('weekCount').textContent = weekCount;
+            document.getElementById('monthCount').textContent = monthCount;
+            document.getElementById('totalCount').textContent = allReservations.length;
+        }
+
+        // Show Reservation Details Modal
+        function showReservationDetails(reservation) {
+            const modal = document.getElementById('reservationModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            const serviceType = reservation.service_type.toLowerCase();
+            const time = formatTime(reservation.reservation_time);
+            const date = formatDate(reservation.reservation_date);
+            
+            modalBody.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Service Type</span>
+                    <span class="detail-value">
+                        <span class="service-badge ${serviceType}">${reservation.service_type}</span>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Client Name</span>
+                    <span class="detail-value">${reservation.client_name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value">${date}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Time</span>
+                    <span class="detail-value">${time}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status</span>
+                    <span class="detail-value">
+                        <span class="status-badge ${reservation.status.toLowerCase()}">${reservation.status}</span>
+                    </span>
+                </div>
+                ${reservation.contact_number ? `
+                <div class="detail-row">
+                    <span class="detail-label">Contact</span>
+                    <span class="detail-value">${reservation.contact_number}</span>
+                </div>
+                ` : ''}
+                ${reservation.email ? `
+                <div class="detail-row">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">${reservation.email}</span>
+                </div>
+                ` : ''}
+                ${reservation.notes ? `
+                <div class="detail-row">
+                    <span class="detail-label">Notes</span>
+                    <span class="detail-value">${reservation.notes}</span>
+                </div>
+                ` : ''}
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        // Format Time (24h to 12h)
+        function formatTime(time24) {
+            if (!time24) return 'N/A';
+            const [hours, minutes] = time24.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            return `${hour12}:${minutes} ${ampm}`;
+        }
+
+        // Format Date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Close Modal
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('reservationModal').classList.remove('show');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('reservationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        });
+
+        // Refresh Calendar
+        document.getElementById('refreshCalendar').addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.style.animation = 'spin 1s linear';
+            
+            loadReservations().then(() => {
+                setTimeout(() => {
+                    icon.style.animation = '';
+                }, 1000);
+            });
+        });
+
+        // Print Calendar Function
+        document.getElementById('printPriestCalendarBtn').addEventListener('click', function() {
+            printPriestCalendar();
+        });
+
+        // Generate Calendar Grid for Printing
+        function generateCalendarGrid(year, month, reservations) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            // Get first day of month and total days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Group reservations by date
+            const reservationsByDate = {};
+            reservations.forEach(reservation => {
+                const resDate = new Date(reservation.reservation_date);
+                if (resDate.getMonth() === month && resDate.getFullYear() === year) {
+                    const dateKey = resDate.getDate();
+                    if (!reservationsByDate[dateKey]) {
+                        reservationsByDate[dateKey] = [];
+                    }
+                    reservationsByDate[dateKey].push(reservation);
+                }
+            });
+            
+            let html = `
+                <div style="text-align: center; margin-bottom: 10px; font-size: 12px; font-weight: bold;">
+                    ${monthNames[month]} ${year}
+                </div>
+                <table style="width: 100%; border-collapse: collapse; border: 2px solid #000;">
+                    <thead>
+                        <tr>
+            `;
+            
+            // Day headers
+            dayNames.forEach(day => {
+                html += `<th style="border: 1px solid #000; padding: 5px; background: #e0e0e0; font-size: 9px; font-weight: bold;">${day}</th>`;
+            });
+            
+            html += `
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            // Calendar grid
+            let weekRow = '<tr>';
+            
+            // Empty cells before first day
+            for (let i = 0; i < firstDay; i++) {
+                weekRow += '<td style="border: 1px solid #000; height: 70px; vertical-align: top; padding: 3px; background: #f5f5f5;"></td>';
+            }
+            
+            // Days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayOfWeek = (firstDay + day - 1) % 7;
+                
+                weekRow += '<td style="border: 1px solid #000; height: 70px; vertical-align: top; padding: 3px;">';
+                weekRow += `<div style="font-weight: bold; font-size: 9px; margin-bottom: 3px; text-align: center;">${day}</div>`;
+                
+                // Add reservations for this day
+                if (reservationsByDate[day]) {
+                    reservationsByDate[day].forEach(reservation => {
+                        const serviceType = reservation.service_type.toLowerCase();
+                        let color = '#3788d8'; // default blue
+                        
+                        // Service type colors
+                        if (serviceType === 'wedding') color = '#fbbf24';
+                        else if (serviceType === 'baptism') color = '#60a5fa';
+                        else if (serviceType === 'funeral') color = '#9ca3af';
+                        else if (serviceType === 'confirmation') color = '#a78bfa';
+                        
+                        const time = formatTime(reservation.reservation_time);
+                        weekRow += `<div style="background: ${color}; color: white; font-size: 6px; padding: 1px 2px; margin: 1px 0; border-radius: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${time} ${reservation.service_type}</div>`;
+                    });
+                }
+                
+                weekRow += '</td>';
+                
+                // End of week
+                if (dayOfWeek === 6) {
+                    weekRow += '</tr>';
+                    html += weekRow;
+                    weekRow = '<tr>';
+                }
+            }
+            
+            // Fill remaining cells
+            const remainingCells = (7 - ((firstDay + daysInMonth) % 7)) % 7;
+            for (let i = 0; i < remainingCells; i++) {
+                weekRow += '<td style="border: 1px solid #000; height: 70px; vertical-align: top; padding: 3px; background: #f5f5f5;"></td>';
+            }
+            
+            if (weekRow !== '<tr>') {
+                weekRow += '</tr>';
+                html += weekRow;
+            }
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            return html;
+        }
+
+        function printPriestCalendar() {
+            console.log('🖨️ Printing Priest Calendar...');
+            
+            // Get the calendar instance
+            if (!calendar) {
+                alert('Calendar not initialized');
+                return;
+            }
+            
+            // Get current month/year from calendar
+            const currentDate = calendar.getDate();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            
+            // Get month name
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            const monthName = monthNames[currentMonth];
+            
+            const reportTitle = `${monthName} ${currentYear} - Priest Schedule Report`;
+            
+            // Generate calendar grid HTML (always show calendar)
+            const calendarHTML = generateCalendarGrid(currentYear, currentMonth, allReservations);
+            
+            // Filter reservations to only show current month
+            const filteredReservations = allReservations.filter(reservation => {
+                const resDate = new Date(reservation.reservation_date);
+                return resDate.getMonth() === currentMonth && resDate.getFullYear() === currentYear;
+            });
+            
+            console.log(`🔍 Filtering reservations for ${currentYear}-${currentMonth + 1}: Found ${filteredReservations.length} reservations`);
+            
+            // Group reservations by date
+            const reservationsByDate = {};
+            filteredReservations.forEach(reservation => {
+                const date = reservation.reservation_date;
+                if (!reservationsByDate[date]) {
+                    reservationsByDate[date] = [];
+                }
+                reservationsByDate[date].push(reservation);
+            });
+            
+            // Sort dates
+            const sortedDates = Object.keys(reservationsByDate).sort();
+            
+            // Generate print content
+            let printContent = '';
+            
+            sortedDates.forEach(date => {
+                const dateObj = new Date(date);
+                const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                printContent += `
+                    <div class="date-section">
+                        <div class="date-header">${formattedDate}</div>
+                `;
+                
+                // Sort reservations by time
+                reservationsByDate[date].sort((a, b) => {
+                    return a.reservation_time.localeCompare(b.reservation_time);
+                });
+                
+                reservationsByDate[date].forEach(reservation => {
+                    const time = formatTime(reservation.reservation_time);
+                    
+                    printContent += `
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div>
+                                    <div class="event-title">${reservation.service_type} - ${reservation.client_name}</div>
+                                    <div class="event-type">RESERVATION - ${reservation.service_type}</div>
+                                </div>
+                                <div class="event-time">${time}</div>
+                            </div>
+                            <div class="event-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Client:</span>
+                                    <span>${reservation.client_name}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Contact:</span>
+                                    <span>${reservation.client_phone || 'N/A'}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Status:</span>
+                                    <span>${reservation.status.toUpperCase()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                printContent += `
+                    </div>
+                `;
+            });
+            
+            if (sortedDates.length === 0) {
+                printContent = `
+                    <div style="text-align: center; padding: 40px; border: 2px solid #000; margin: 20px 0;">
+                        <p style="font-size: 14px; font-weight: bold;">NO SCHEDULE AVAILABLE</p>
+                        <p style="font-size: 12px; margin-top: 10px;">No reservations found for this month.</p>
+                    </div>
+                `;
+            }
+            
+            // Get current date and time
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const timeStr = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Create hidden iframe for printing
+            const iframe = document.createElement('iframe');
+            iframe.style.position = 'fixed';
+            iframe.style.right = '0';
+            iframe.style.bottom = '0';
+            iframe.style.width = '0';
+            iframe.style.height = '0';
+            iframe.style.border = 'none';
+            document.body.appendChild(iframe);
+            
+            const iframeDoc = iframe.contentWindow.document;
+            
+            // Write HTML content to iframe
+            iframeDoc.open();
+            iframeDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${reportTitle} - ChurchEase Report</title>
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 15mm;
+                        }
+                        
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        
+                        body {
+                            font-family: 'Times New Roman', Times, serif;
+                            background: white;
+                            color: #000;
+                        }
+                        
+                        .document {
+                            max-width: 210mm;
+                            margin: 0 auto;
+                            padding: 0;
+                        }
+                        
+                        /* Official Header */
+                        .official-header {
+                            text-align: center;
+                            border-bottom: 4px double #000;
+                            padding-bottom: 10px;
+                            margin-bottom: 15px;
+                        }
+                        
+                        .church-logo {
+                            width: 50px;
+                            height: 50px;
+                            margin: 0 auto 8px;
+                        }
+                        
+                        .church-name {
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #000;
+                            margin-bottom: 3px;
+                            letter-spacing: 1px;
+                        }
+                        
+                        .church-address {
+                            font-size: 9px;
+                            color: #333;
+                            margin: 1px 0;
+                        }
+                        
+                        .document-title {
+                            font-size: 14px;
+                            font-weight: bold;
+                            color: #000;
+                            margin-top: 8px;
+                            text-transform: uppercase;
+                            letter-spacing: 1.5px;
+                            border-top: 1px solid #000;
+                            border-bottom: 1px solid #000;
+                            padding: 6px 0;
+                        }
+                        
+                        /* Document Info */
+                        .document-info {
+                            margin: 12px 0;
+                            font-size: 9px;
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            background: #f9f9f9;
+                        }
+                        
+                        .info-row {
+                            display: flex;
+                            justify-content: space-between;
+                            margin: 4px 0;
+                        }
+                        
+                        .info-label {
+                            font-weight: bold;
+                            color: #333;
+                        }
+                        
+                        .info-value {
+                            color: #000;
+                        }
+                        
+                        /* Content Sections */
+                        .date-section {
+                            margin-bottom: 25px;
+                            page-break-inside: avoid;
+                        }
+                        
+                        .date-header {
+                            font-size: 14px;
+                            font-weight: bold;
+                            border-bottom: 2px solid #000;
+                            padding-bottom: 5px;
+                            margin-bottom: 12px;
+                        }
+                        
+                        .event-item {
+                            border: 1px solid #000;
+                            padding: 12px;
+                            margin-bottom: 10px;
+                            page-break-inside: avoid;
+                        }
+                        
+                        .event-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: start;
+                            margin-bottom: 8px;
+                            border-bottom: 1px solid #ccc;
+                            padding-bottom: 8px;
+                        }
+                        
+                        .event-title {
+                            font-size: 13px;
+                            font-weight: bold;
+                        }
+                        
+                        .event-time {
+                            font-size: 12px;
+                            font-weight: bold;
+                            background: #000;
+                            color: #fff;
+                            padding: 4px 10px;
+                            border-radius: 3px;
+                        }
+                        
+                        .event-type {
+                            font-size: 11px;
+                            color: #555;
+                            margin-top: 5px;
+                        }
+                        
+                        .event-details {
+                            font-size: 11px;
+                            margin-top: 8px;
+                            padding-top: 8px;
+                            border-top: 1px dashed #ccc;
+                        }
+                        
+                        .detail-row {
+                            margin-bottom: 3px;
+                        }
+                        
+                        .detail-label {
+                            font-weight: bold;
+                            display: inline-block;
+                            width: 80px;
+                        }
+                        
+                        /* Signature Section */
+                        .signature-section {
+                            margin-top: 30px;
+                            display: flex;
+                            justify-content: space-between;
+                            page-break-inside: avoid;
+                        }
+                        
+                        .signature-box {
+                            text-align: center;
+                            width: 45%;
+                        }
+                        
+                        .signature-line {
+                            border-top: 1px solid #000;
+                            margin-top: 40px;
+                            padding-top: 5px;
+                        }
+                        
+                        .signature-name {
+                            font-size: 10px;
+                            font-weight: bold;
+                            color: #000;
+                        }
+                        
+                        .signature-title {
+                            font-size: 8px;
+                            color: #666;
+                            margin-top: 2px;
+                            text-transform: uppercase;
+                        }
+                        
+                        /* Footer */
+                        .document-footer {
+                            margin-top: 15px;
+                            padding-top: 10px;
+                            border-top: 2px solid #000;
+                            text-align: center;
+                            font-size: 8px;
+                            color: #666;
+                        }
+                        
+                        .footer-note {
+                            margin: 2px 0;
+                            font-style: italic;
+                        }
+                        
+                        @media print {
+                            body {
+                                print-color-adjust: exact;
+                                -webkit-print-color-adjust: exact;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="document">
+                        <!-- Official Header -->
+                        <div class="official-header">
+                            <div class="church-logo">
+                                <img src="/static/ChurchLogo.jpg" alt="Church Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <div class="church-name">SAINT ANDREW THE APOSTLE PARISH</div>
+                            <div class="church-address">Norzagaray, Bulacan</div>
+                            <div class="church-address">H. Bernabe Street, Poblacion, Norzagaray, 3013 Bulacan</div>
+                            <div class="church-address">Tel: 0995 770 5637</div>
+                            <div class="church-address">Office Hours: Tuesday - Sunday, 8:00 AM - 5:00 PM (Closed Mondays)</div>
+                            <div class="document-title">${reportTitle}</div>
+                        </div>
+                        
+                        <!-- Document Information -->
+                        <div class="document-info">
+                            <div class="info-row">
+                                <span class="info-label">Document Type:</span>
+                                <span class="info-value">Priest Schedule Report</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Priest Name:</span>
+                                <span class="info-value">{{ user.full_name or 'Father' }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Report Period:</span>
+                                <span class="info-value">${monthName} ${currentYear}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Generated Date:</span>
+                                <span class="info-value">${dateStr}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Generated Time:</span>
+                                <span class="info-value">${timeStr}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Total Reservations:</span>
+                                <span class="info-value">${filteredReservations.length}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Visual Calendar -->
+                        <div style="margin-bottom: 30px; padding: 10px; page-break-inside: avoid;">
+                            <h3 style="font-size: 12px; font-weight: bold; text-align: center; margin-bottom: 15px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 8px;">Calendar View</h3>
+                            ${calendarHTML}
+                        </div>
+                        
+                        <!-- Detailed Schedule -->
+                        <div class="calendar-content">
+                            <h3 style="font-size: 12px; font-weight: bold; text-align: center; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #000; padding-bottom: 8px;">Detailed Schedule</h3>
+                            ${printContent}
+                        </div>
+                        
+                        <!-- Signature Section -->
+                        <div class="signature-section">
+                            <div class="signature-box">
+                                <div class="signature-line">
+                                    <div class="signature-name">_____________________</div>
+                                    <div class="signature-title">Priest Signature</div>
+                                </div>
+                            </div>
+                            <div class="signature-box">
+                                <div class="signature-line">
+                                    <div class="signature-name">_____________________</div>
+                                    <div class="signature-title">Parish Secretary</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Document Footer -->
+                        <div class="document-footer">
+                            <p class="footer-note"><strong>Saint Andrew the Apostle Parish © ${new Date().getFullYear()}. All Rights Reserved.</strong></p>
+                            <p class="footer-note">This is a computer-generated document.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            iframeDoc.close();
+            
+            // Wait for content to load, then print
+            iframe.onload = function() {
+                setTimeout(function() {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                    
+                    // Remove iframe after printing
+                    setTimeout(function() {
+                        document.body.removeChild(iframe);
+                    }, 1000);
+                }, 250);
+            };
+        }
+
+        // Spin animation for refresh icon
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarUserProfile = document.getElementById('sidebarUserProfile');
+        const sidebarUserDropdown = document.getElementById('sidebarUserDropdown');
+
+        // Toggle sidebar collapse
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            const icon = this.querySelector('i');
+            if (sidebar.classList.contains('collapsed')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            }
+        });
+
+        // Mobile menu toggle
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.add('mobile-open');
+            sidebarOverlay.classList.add('active');
+        });
+
+        // Close sidebar on overlay click
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // User profile dropdown toggle with arrow animation
+        const dropdownArrow = document.getElementById('dropdownArrow');
+        
+        sidebarUserProfile.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isVisible = sidebarUserDropdown.style.display === 'block';
+            
+            if (!isVisible) {
+                sidebarUserDropdown.style.display = 'block';
+                // Rotate arrow down when dropdown is open
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(180deg)';
+                }
+            } else {
+                sidebarUserDropdown.style.display = 'none';
+                // Rotate arrow back up when dropdown is closed
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!sidebarUserProfile.contains(e.target) && !sidebarUserDropdown.contains(e.target)) {
+                sidebarUserDropdown.style.display = 'none';
+                // Reset arrow rotation
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+
+        // Profile Settings Modal
+        const profileSettingsModal = document.getElementById('profileSettingsModal');
+        const myProfileBtn = document.getElementById('myProfileBtn');
+        const closeProfileModal = document.getElementById('closeProfileModal');
+        const cancelProfileSettings = document.getElementById('cancelProfileSettings');
+
+        // Show profile modal when clicking My Profile
+        if (myProfileBtn) {
+            myProfileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                profileSettingsModal.style.display = 'flex';
+                sidebarUserDropdown.style.display = 'none'; // Close dropdown
+                // Reset arrow rotation
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        // Close profile modal
+        if (closeProfileModal) {
+            closeProfileModal.addEventListener('click', function() {
+                profileSettingsModal.style.display = 'none';
+            });
+        }
+
+        if (cancelProfileSettings) {
+            cancelProfileSettings.addEventListener('click', function() {
+                profileSettingsModal.style.display = 'none';
+            });
+        }
+
+        // Close modal when clicking outside
+        profileSettingsModal.addEventListener('click', function(e) {
+            if (e.target === profileSettingsModal) {
+                profileSettingsModal.style.display = 'none';
+            }
+        });
+
+        // Logout Modal Functionality
+        const logoutModal = document.getElementById('logoutModal');
+        const logoutLink = document.getElementById('logoutLink');
+        const closeLogoutModal = document.getElementById('closeLogoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+
+        // Show logout modal when clicking logout link
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            logoutModal.style.display = 'flex';
+            sidebarUserDropdown.style.display = 'none'; // Close dropdown
+        });
+
+        // Close modal when clicking X
+        closeLogoutModal.addEventListener('click', function() {
+            logoutModal.style.display = 'none';
+        });
+
+        // Close modal when clicking Cancel
+        cancelLogout.addEventListener('click', function() {
+            logoutModal.style.display = 'none';
+        });
+
+        // Logout when clicking Confirm
+        confirmLogout.addEventListener('click', function() {
+            window.location.href = '/';
+        });
+
+        // Close modal when clicking outside
+        logoutModal.addEventListener('click', function(e) {
+            if (e.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+
+        // Add hover effects to buttons
+        cancelLogout.addEventListener('mouseenter', function() {
+            this.style.background = '#d1d5db';
+        });
+        cancelLogout.addEventListener('mouseleave', function() {
+            this.style.background = '#e5e7eb';
+        });
+
+        confirmLogout.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.4)';
+        });
+        confirmLogout.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+
+        // Keyboard support - ESC key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                profileSettingsModal.style.display = 'none';
+                logoutModal.style.display = 'none';
+                sidebarUserDropdown.style.display = 'none';
+                // Reset arrow rotation
+                if (dropdownArrow) {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
