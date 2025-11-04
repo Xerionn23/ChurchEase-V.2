@@ -79,12 +79,14 @@ git push -u origin main
 4. **Add Environment Variables:**
    Click "Advanced" → "Add Environment Variable"
    
-   Add these:
+   Add these (IMPORTANT!):
    ```
    SUPABASE_URL = https://dgeauftgwgxkbwidiios.supabase.co
-   SUPABASE_KEY = your_supabase_anon_key_here
+   SUPABASE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRnZWF1ZnRnd2d4a2J3aWRpaW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNzg0NDUsImV4cCI6MjA3Mjg1NDQ0NX0.RfXmA9vHiUkIR2blt6r2RP_2reKfdy8IQUL7b5uX13M
    SECRET_KEY = (auto-generated, don't change)
    FLASK_ENV = production
+   MAIL_USERNAME = rotchercadorna16@gmail.com
+   MAIL_PASSWORD = nkwbyvexcovwybdy
    ```
 
 5. **Deploy!**
