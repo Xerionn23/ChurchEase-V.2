@@ -3958,8 +3958,8 @@
                         completedReservations: allReservations.filter(r => r.status === 'completed').length
                     });
                     
-                    // Initialize dashboard charts with ALL reservations
-                    console.log('📊 Calling initializeDashboardCharts with', allReservations.length, 'reservations');
+                    // Initialize dashboard charts (now using API endpoints)
+                    console.log('📊 Calling initializeDashboardCharts');
                     initializeDashboardCharts(allReservations);
                 } else {
                     console.error('❌ Failed to load reservations:', reservationsResult);
@@ -4032,120 +4032,87 @@
             initializeServiceDistributionChart(reservations);
         }
         
-        function initializeMonthlyReservationsChart(reservations) {
+        async function initializeMonthlyReservationsChart(reservations) {
             const ctx = document.getElementById('monthlyReservationsChart');
             if (!ctx) {
                 console.error('❌ Chart canvas not found: monthlyReservationsChart');
                 return;
             }
             
-            console.log('📈 Creating Monthly Reservations Chart...');
+            console.log('📈 Loading Monthly Reservations Chart from API...');
             
-            // Get approved reservations from last 6 months
-            const now = new Date();
-            const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
-            
-            const approvedReservations = reservations.filter(r => 
-                r.status === 'approved' || r.status === 'confirmed'
-            );
-            
-            console.log('📊 Approved/Confirmed reservations:', approvedReservations.length);
-            console.log('📊 Sample approved reservation:', approvedReservations[0]);
-            
-            // Group by month
-            const monthlyData = {};
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            
-            // Initialize last 6 months
-            for (let i = 5; i >= 0; i--) {
-                const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-                const key = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-                monthlyData[key] = 0;
+            try {
+                // Use the same API endpoint as Reports module
+                const response = await fetch('/api/reports/monthly-reservations');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    console.log('📊 Dashboard Monthly Chart - Labels:', data.labels, 'Counts:', data.counts);
+                    
+                    monthlyChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Approved Reservations',
+                                data: data.counts,
+                                borderColor: '#002b5c',
+                                backgroundColor: 'rgba(0, 43, 92, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointHoverRadius: 7,
+                                pointBackgroundColor: '#002b5c',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0, 43, 92, 0.9)',
+                                    padding: 12,
+                                    titleFont: { size: 14, weight: 'bold' },
+                                    bodyFont: { size: 13 }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                        font: { size: 12 }
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.05)'
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: { size: 12 }
+                                    },
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
+                    console.log('✅ Dashboard Monthly Reservations Chart created successfully');
+                } else {
+                    console.error('❌ API returned error:', result.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('❌ Error loading dashboard monthly chart:', error);
             }
-            
-            console.log('📊 Initialized monthly data structure:', monthlyData);
-            
-            // Count reservations per month
-            approvedReservations.forEach(reservation => {
-                // Try multiple date field names
-                const dateStr = reservation.reservation_date || reservation.date || reservation.event_date;
-                if (!dateStr) {
-                    console.warn('⚠️ No date found for reservation:', reservation);
-                    return;
-                }
-                
-                const date = new Date(dateStr);
-                if (isNaN(date.getTime())) {
-                    console.warn('⚠️ Invalid date:', dateStr);
-                    return;
-                }
-                
-                if (date >= sixMonthsAgo) {
-                    const key = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-                    if (monthlyData[key] !== undefined) {
-                        monthlyData[key]++;
-                        console.log(`✅ Added reservation to ${key}:`, reservation.id);
-                    }
-                }
-            });
-            
-            console.log('📊 Final monthly data:', monthlyData);
-            
-            monthlyChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: Object.keys(monthlyData),
-                    datasets: [{
-                        label: 'Approved Reservations',
-                        data: Object.values(monthlyData),
-                        borderColor: '#002b5c',
-                        backgroundColor: 'rgba(0, 43, 92, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        pointBackgroundColor: '#002b5c',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 43, 92, 0.9)',
-                            padding: 12,
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                font: { size: 12 }
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                font: { size: 12 }
-                            },
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
         }
         
         function initializeServiceDistributionChart(reservations) {
